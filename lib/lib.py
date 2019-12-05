@@ -115,11 +115,15 @@ def merge(arr, other, isdupe, merge_op):
     out = list(arr) + list(other[1:]) # ignore header row in other
     dupes = find_all_duplicates(out, isdupe)
     for group in dupes:
-        outrow = [''] * len(get_header(arr))
+        outrow = [''] * len(get_header(arr)) # TODO: undo temp fix
         for dupeid in group:
             dupe = out[dupeid]
             for i,field in enumerate(dupe):
-                outrow[i] = merge_op(field, outrow[i])
+                # print(i, len(dupe))
+                if i < len(outrow):
+                    outrow[i] = merge_op(field, outrow[i])
+                else:
+                    print(dupeid)
         out.append(outrow)
 
     logging.debug("Duplicates from merging databases, size {} & {} respectively\n {}".format(len(arr), len(other), dupes))
