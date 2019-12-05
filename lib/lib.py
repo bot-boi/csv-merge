@@ -21,12 +21,21 @@ class CSVInfo:
 def get_reader(info):
     return csv.reader(info.handle, info.dialect)
 
+def get_writer(info, f): # file
+    return csv.writer(f, dialect=info.dialect, escapechar='\\')
+
 # returns a numpy array of the csv file
 def get_text(info):
     result = np.array([row for row in get_reader(info)])
     info.handle.seek(0) # reset index for later reads
     return result
 
+# save a csv file to disk
+def save(info, arr, fpath):
+    f = open(fpath, "w", newline="")
+    w = get_writer(info, f)
+    w.writerows(arr)
+    f.close()
 
 # operations on the raw numpy data
 
@@ -113,10 +122,12 @@ def merge(arr, other, isdupe, merge_op):
                 outrow[i] = merge_op(field, outrow[i])
         out.append(outrow)
 
-    print(dupes)
+    logging.debug("Duplicates from merging databases, size {} & {} respectively\n {}".format(len(arr), len(other), dupes))
     for group in dupes:
         for dupeid in group:
-            out[dupeid] = [''] * len(get_header(arr))
+            out[dupeid] = [''] * len(get_header(out))
 
-    return out
+    out1 = [row for row in out if not np.all(row == ['']*len(get_header(out)))]
+
+    return out1
 
