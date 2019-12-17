@@ -1,3 +1,7 @@
 *.csv
 __pycache__
 *.swp
+*.pyc
+dist
+build
+*.zip

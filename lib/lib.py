@@ -138,5 +138,5 @@ def merge(arr, other, isdupe, merge_op):
 def merge_all(arrs, isdupe, merge_op):
     out = []
     for arr in arrs:
-        out += merge(arr, out, isdupe, merge_op)
+        out = merge(arr, out, isdupe, merge_op)
     return out

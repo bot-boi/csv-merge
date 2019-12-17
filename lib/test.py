@@ -1,4 +1,4 @@
-from lib import *
+from lib.lib import *
 
 info = CSVInfo("mine.csv")
 info30 = CSVInfo("alan30.csv")
